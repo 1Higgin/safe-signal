@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827"><meta name="description" content="Free personal safety toolkit by SignalCore Lab.">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png">
+<title>SAFE SIGNAL — SignalCore Lab</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#151e31;--line:#2c3950;--muted:#aab6c8;--red:#d92736;--amber:#d68a22;--green:#16835b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f7f9fc;font:16px system-ui,-apple-system,sans-serif}header{padding:18px 16px 12px;text-align:center;border-bottom:1px solid var(--line)}header h1{margin:0;font-size:26px;letter-spacing:1px}header p{margin:4px 0;color:var(--muted);font-size:12px;letter-spacing:1.3px}.brand{font-size:12px;color:#c5d0df;margin-top:8px}.wrap{max-width:650px;margin:auto;padding:14px 14px 40px}.notice{background:#242d40;border:1px solid var(--line);padding:12px;border-radius:12px;color:#dce5f2;font-size:13px;line-height:1.45;margin-bottom:14px}.sos{width:100%;min-height:116px;border:0;border-radius:18px;background:linear-gradient(145deg,#ed3443,#a80f20);color:white;font-weight:850;font-size:28px;letter-spacing:.5px;box-shadow:0 8px 25px #0008}.sos small{display:block;font-size:13px;font-weight:500;margin-top:5px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.tile,button,.linkbtn{border:1px solid var(--line);background:var(--panel);color:#f7f9fc;border-radius:13px;padding:15px;text-align:left;font:inherit;min-height:72px}.tile strong{display:block;font-size:15px}.tile span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.tile:active,button:active{filter:brightness(1.2)}.section{margin-top:22px}.section h2{font-size:17px;margin:0 0 10px}.row{display:flex;gap:9px;flex-wrap:wrap}.row button{flex:1;min-width:130px;text-align:center}.green{background:#124b3b}.amber{background:#553a16}.redline{border-color:#91303b}.field{display:block;margin:10px 0;color:#dce5f2;font-size:13px}.field input,.field textarea,.field select{display:block;width:100%;margin-top:5px;background:#0d1525;border:1px solid var(--line);border-radius:9px;padding:12px;color:white;font:inherit}.field textarea{min-height:75px}.muted{color:var(--muted);font-size:12px;line-height:1.45}.status{padding:10px;border-radius:10px;background:#1b2940;margin-top:10px;font-size:13px;white-space:pre-wrap}.hidden{display:none!important}.flash{position:fixed;inset:0;background:white;z-index:99;animation:blink .35s steps(2,start) infinite;pointer-events:none}@keyframes blink{to{opacity:.08}}.modal{position:fixed;inset:0;background:#000b;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px}.modal>div{background:#151e31;border:1px solid var(--line);border-radius:16px;padding:20px;width:min(100%,480px);max-height:90vh;overflow:auto}.modal h2{margin-top:0}.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}.dangertext{color:#ff9ba4}
+</style>
+</head>
+<body>
+<header><h1>SAFE SIGNAL</h1><p>PERSONAL SAFETY TOOLKIT</p><div class="brand">A SignalCore Lab Production</div></header>
+<main class="wrap">
+<div class="notice"><strong>Important:</strong> This is a helper tool, not an emergency service. If you are in immediate danger, call <b>999</b> (UK) or your local emergency number. Do not wait for this app to send an alert.</div>
+<button class="sos" id="sos">SOS — I'M UNSAFE<small>Alert chosen contacts and share my location</small></button>
+<div class="grid">
+<button class="tile" id="silent"><strong>◉ Silent SOS</strong><span>Prepare discreet contact alert</span></button>
+<button class="tile" id="call"><strong>☎ Call 999 / 112</strong><span>Open your phone dialler</span></button>
+<button class="tile" id="alarm"><strong>🔊 Alarm</strong><span>Sound a loud repeating alarm</span></button>
+<button class="tile" id="flash"><strong>▣ Flash screen</strong><span>Bright flashing screen (not camera flash)</span></button>
+<button class="tile" id="torch"><strong>▰ Torch</strong><span>Use screen as a steady light</span></button>
+<button class="tile" id="evidence"><strong>● Evidence camera</strong><span>Record video or take a photo</span></button>
+<button class="tile" id="fake"><strong>☎ Fake incoming call</strong><span>Show a simulated call screen</span></button>
+<button class="tile" id="journey"><strong>⌚ Journey check-in</strong><span>Set a timer for safe arrival</span></button>
+</div>
+
+<section class="section">
+<h2>Emergency contacts</h2>
+<p class="muted">Add people you trust. This information stays in this browser on this device.</p>
+<label class="field">Contact name<input id="contactName" autocomplete="name" placeholder="e.g. Alex"></label>
+<label class="field">Mobile number<input id="contactPhone" type="tel" autocomplete="tel" placeholder="+44..."></label>
+<div class="row"><button id="saveContact" class="green">Save contact</button><button id="testSms">Test message</button></div>
+<div id="contacts" class="status">No contacts added yet.</div>
+</section>
+
+<section class="section">
+<h2>SOS preferences</h2>
+<label class="field">Emergency message<textarea id="message">I may be in danger and need help. Please try to contact me. My location is included if available.</textarea></label>
+<label class="field">When SOS starts
+<select id="sosMode"><option value="alert">Alert contacts and prepare location message</option><option value="silent">Silent contact alert (no alarm)</option><option value="alarm">Alert contacts and sound alarm</option></select></label>
+<label class="field">Check-in timer (minutes)<input id="minutes" type="number" min="1" max="240" value="15"></label>
+<div class="row"><button id="saveSettings">Save preferences</button><button id="ice">Emergency medical card</button></div>
+</section>
+
+<section class="section">
+<h2>Evidence and sharing</h2>
+<p class="muted">Capture only when safe. Recording can distract you or increase danger. Share evidence privately with a trusted person or the police; avoid public accusations or group broadcasts.</p>
+<div class="row"><button id="photo">Take photo</button><button id="video">Start video</button><button id="stopVideo" class="amber">Stop video</button></div>
+<video id="preview" class="hidden" autoplay muted playsinline style="width:100%;margin-top:10px;border-radius:12px;background:#000"></video>
+<div id="evidenceStatus" class="status">No evidence captured.</div>
+</section>
+<section class="section">
+<h2>Safety notes</h2>
+<p class="muted">Location, SMS, camera and sharing depend on device permissions, network access and browser support. This PWA cannot silently send SMS or WhatsApp messages, reliably run emergency tasks in the background, or activate the phone's hardware camera flash. Sharing opens the Android share sheet when supported; choose WhatsApp if available. Confirm that your contact actually received the alert.</p>
+</section>
+<div class="footer">SAFE SIGNAL · A SignalCore Lab Production<br>Free to use · No adverts · No subscription<br><button id="about" style="margin-top:12px;min-height:42px">Privacy & limitations</button></div>
+</main>
+
+<div id="modal" class="modal hidden"><div><h2 id="modalTitle"></h2><div id="modalBody"></div><div class="row" style="margin-top:15px"><button id="modalClose">Close</button></div></div></div>
+<div id="flashLayer" class="flash hidden"></div>
+<script>
+const $=id=>document.getElementById(id);
+let contacts=JSON.parse(localStorage.getItem('ss_contacts')||'[]'), prefs=JSON.parse(localStorage.getItem('ss_prefs')||'{}');
+let stream=null,recorder=null,chunks=[],lastBlob=null,alarmCtx=null,alarmTimer=null,journeyTimer=null,journeyEnd=null,torchOn=false;
+$('message').value=prefs.message||$('message').value;$('sosMode').value=prefs.mode||'alert';$('minutes').value=prefs.minutes||15;
+function renderContacts(){ $('contacts').innerHTML=contacts.length?contacts.map((c,i)=>`${escapeHtml(c.name)} — ${escapeHtml(c.phone)} <button data-del="${i}" style="min-height:32px;padding:5px 9px;margin:4px">Remove</button>`).join('<br>'):'No contacts added yet.';}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+renderContacts();
+$('contacts').addEventListener('click',e=>{if(e.target.dataset.del!==undefined){contacts.splice(+e.target.dataset.del,1);localStorage.setItem('ss_contacts',JSON.stringify(contacts));renderContacts();}});
+$('saveContact').onclick=()=>{let name=$('contactName').value.trim(),phone=$('contactPhone').value.trim();if(!name||!phone){alert('Enter a name and mobile number.');return;}contacts.push({name,phone});localStorage.setItem('ss_contacts',JSON.stringify(contacts));$('contactName').value='';$('contactPhone').value='';renderContacts();};
+$('saveSettings').onclick=()=>{prefs={message:$('message').value,mode:$('sosMode').value,minutes:Math.max(1,Math.min(240,+$('minutes').value||15))};localStorage.setItem('ss_prefs',JSON.stringify(prefs));alert('Preferences saved on this device.');};
+async function getLocation(){return new Promise(resolve=>{if(!navigator.geolocation){resolve(null);return;}navigator.geolocation.getCurrentPosition(p=>resolve({lat:p.coords.latitude,lon:p.coords.longitude,accuracy:Math.round(p.coords.accuracy),time:new Date().toISOString()}),()=>resolve(null),{enableHighAccuracy:true,timeout:9000,maximumAge:30000});});}
+function locText(loc){return loc?`Location: https://maps.google.com/?q=${loc.lat},${loc.lon} (accuracy approx. ${loc.accuracy}m; ${new Date(loc.time).toLocaleString()})`:'Location unavailable. Please contact me.';}
+function smsUrl(phone,body){return 'sms:'+encodeURIComponent(phone)+'?body='+encodeURIComponent(body);}
+async function prepareSOS(silent=false){let loc=await getLocation(),body=($('message').value||'I may be in danger. Please contact me.')+'\\n'+locText(loc);if(!contacts.length){showModal('No emergency contacts','Please add trusted contacts in settings. Emergency calling remains available.');return;}let links=contacts.map(c=>`<p><b>${escapeHtml(c.name)}</b> — ${escapeHtml(c.phone)}<br><a href="${smsUrl(c.phone,body)}">Open text to ${escapeHtml(c.name)}</a></p>`).join('');showModal(silent?'Silent SOS — messages ready':'SOS — contact alerts ready',`<p>${loc?`Location found (±${loc.accuracy}m).`:'Could not obtain GPS location.'} Your messages are prepared but <b>not sent</b>. Tap each contact link and press Send in your messaging app.</p>${links}<p><a href="tel:999">Call 999</a> · <a href="tel:112">Call 112</a></p>`);}
+$('sos').onclick=()=>{prepareSOS(false).then(()=>{if($('sosMode').value==='alarm')startAlarm();});};
+$('silent').onclick=()=>prepareSOS(true);
+$('call').onclick=()=>location.href='tel:999';
+$('testSms').onclick=()=>{if(!contacts.length){alert('Add a contact first.');return;}location.href=smsUrl(contacts[0].phone,'SAFE SIGNAL test message. This is a test, not an emergency.');};
+function showModal(title,html){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modal').classList.remove('hidden');}
+$('modalClose').onclick=()=>$('modal').classList.add('hidden');
+$('about').onclick=()=>showModal('Privacy and limitations','<p>Contacts, settings and medical details are stored locally in this browser. No account or remote server is used by this prototype.</p><p>Messages are not sent automatically. Location requires permission and may fail indoors. Camera and video require permission. Evidence remains on this device until you share it.</p><p>This app is not monitored and cannot contact emergency services automatically. Call 999/112 directly when immediate help is needed.</p>');
+function startAlarm(){stopAlarm();try{let C=window.AudioContext||window.webkitAudioContext;alarmCtx=new C();let osc=alarmCtx.createOscillator(),gain=alarmCtx.createGain();osc.type='sawtooth';osc.frequency.value=880;gain.gain.value=.16;osc.connect(gain);gain.connect(alarmCtx.destination);osc.start();let high=false;alarmTimer=setInterval(()=>{high=!high;osc.frequency.setValueAtTime(high?1100:650,alarmCtx.currentTime);},350);showModal('Alarm active','<p>Alarm is sounding. Close this panel and press Stop alarm below to stop it.</p><button id="stopAlarmBtn">Stop alarm</button>');setTimeout(()=>{let b=$('stopAlarmBtn');if(b)b.onclick=stopAlarm;},0);}catch(e){alert('Alarm audio is unavailable.');}}
+function stopAlarm(){if(alarmTimer)clearInterval(alarmTimer);alarmTimer=null;if(alarmCtx){alarmCtx.close().catch(()=>{});alarmCtx=null;}}
+$('alarm').onclick=startAlarm;
+$('flash').onclick=()=>{$('flashLayer').classList.remove('hidden');showModal('Flashing screen','<p>Screen flashing is active. Press Stop flashing to end.</p><button id="stopFlash">Stop flashing</button>');$('stopFlash').onclick=()=>{$('flashLayer').classList.add('hidden');$('modal').classList.add('hidden');};};
+$('torch').onclick=()=>{torchOn=!torchOn;document.body.style.background=torchOn?'#fff':'var(--bg)';document.body.style.color=torchOn?'#111':'#f7f9fc';$('torch').innerHTML=torchOn?'<strong>▰ Turn light off</strong>':'<strong>▰ Torch</strong><span>Use screen as a steady light</span>';};
+$('fake').onclick=()=>showModal('Incoming call','<div style="text-align:center;padding:20px"><div style="font-size:50px">☎</div><h2>Incoming call</h2><p>Alex · Mobile</p><button id="answerFake" class="green">Answer</button></div>');$('modalBody').addEventListener('click',e=>{if(e.target.id==='answerFake')showModal('Call connected','<p>This is a simulation only. No real call has been placed.</p>');});
+$('journey').onclick=()=>{let mins=Math.max(1,Math.min(240,+$('minutes').value||15));journeyEnd=Date.now()+mins*60000;if(journeyTimer)clearInterval(journeyTimer);journeyTimer=setInterval(()=>{let left=journeyEnd-Date.now();if(left<=0){clearInterval(journeyTimer);journeyTimer=null;showModal('Check-in due','<p>Your journey timer has expired. Please confirm you are safe or contact someone you trust. This app cannot automatically alert contacts while closed.</p>');}else{$('journey').querySelector('span').textContent=Math.ceil(left/60000)+' minutes remaining';}},1000);showModal('Journey timer started',`<p>Check in within ${mins} minutes. Keep this app open for the timer to work reliably.</p><button id="cancelJourney">Cancel timer</button>`);$('cancelJourney').onclick=()=>{clearInterval(journeyTimer);journeyTimer=null;$('journey').querySelector('span').textContent='Set a timer for safe arrival';$('modal').classList.add('hidden');};};
+$('ice').onclick=()=>{let v=localStorage.getItem('ss_ice')||'';showModal('Emergency medical card',`<label class="field">Optional information<textarea id="iceText" placeholder="Allergies, medical information, instructions...">${escapeHtml(v)}</textarea></label><button id="saveIce">Save on this device</button>`);$('saveIce').onclick=()=>{localStorage.setItem('ss_ice',$('iceText').value);alert('Saved locally.');$('modal').classList.add('hidden');};};
+async function camera(){if(!navigator.mediaDevices?.getUserMedia)throw Error('Camera is not supported in this browser.');return navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:true});}
+async function shareBlob(blob,name,type){lastBlob=blob;let file=new File([blob],name,{type});$('evidenceStatus').textContent=`Captured ${name}. Use Share to send privately.`;showModal('Evidence captured',`<p>${escapeHtml(name)} is saved in this session. Choose Share to open Android's sharing menu (WhatsApp may appear if installed), or Download to save a copy.</p><div class="row"><button id="shareFile">Share</button><button id="downloadFile">Download</button></div><p class="muted">Sharing requires your confirmation. The app cannot guarantee delivery or recipient receipt.</p>`);$('shareFile').onclick=async()=>{try{if(navigator.canShare?.({files:[file]}))await navigator.share({files:[file],title:'SAFE SIGNAL evidence',text:'Safety incident evidence. Please preserve this file.'});else alert('File sharing is not supported here. Download the file and attach it manually.');}catch(e){}};$('downloadFile').onclick=()=>{let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);};}
+$('photo').onclick=async()=>{try{let s=await camera(),track=s.getVideoTracks()[0],v=document.createElement('video');v.srcObject=s;await v.play();await new Promise(r=>setTimeout(r,500));let c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);c.toBlob(b=>{s.getTracks().forEach(t=>t.stop());if(b)shareBlob(b,'safe-signal-photo.jpg','image/jpeg');},'image/jpeg',.9);}catch(e){alert(e.message||'Camera unavailable.');}};
+$('video').onclick=async()=>{try{stream=await camera();$('preview').srcObject=stream;$('preview').classList.remove('hidden');chunks=[];recorder=new MediaRecorder(stream);recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};recorder.onstop=()=>{let blob=new Blob(chunks,{type:recorder.mimeType||'video/webm'});shareBlob(blob,'safe-signal-video.webm',blob.type);stream?.getTracks().forEach(t=>t.stop());stream=null;$('preview').classList.add('hidden');};recorder.start();$('evidenceStatus').textContent='Recording video. Press Stop video when finished.';}catch(e){alert(e.message||'Video recording unavailable.');}};
+$('stopVideo').onclick=()=>{if(recorder?.state==='recording')recorder.stop();};
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
